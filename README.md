@@ -1,2 +1,7 @@
-# adsp_statistics
-Statistics, Python, Anaconda, Spyder, Kite
+### Install Anaconda
+
+
+### Install Kite
+
+
+### Install numpy, matplotlib package by pip
