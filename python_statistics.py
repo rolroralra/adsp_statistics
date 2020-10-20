@@ -266,8 +266,8 @@ height_median = np.median(height)
 print("mean:", height_mean)
 print("median:", height_median)
 #%% Mode
- import statistics
- print("mode:",statistics.mode(height))
+import statistics
+print("mode:",statistics.mode(height))
 #%% 산포의 측도 
 # var
 height_var = np.var(height)
@@ -292,10 +292,10 @@ q1, q3 = np.percentile(height, [25, 75])
 height_IQR = q3 - q1
 print("IQR:", round(height_IQR, 2))
 #%% 분포의 형태(shape)에 관한 측도
- from scipy.stats import skew
- from scipy.stats import kurtosis
- print("skewness:",round(skew(height), 2))
- print("kurtosis",round(kurtosis(height), 2))
+from scipy.stats import skew
+from scipy.stats import kurtosis
+print("skewness:",round(skew(height), 2))
+print("kurtosis",round(kurtosis(height), 2))
 #%% Python에서 자료의 요약을 보여주는 describe() 함수
 import pandas as pd
 height_df = pd.DataFrame(height)
@@ -364,6 +364,8 @@ np.random.seed(random_seed)
 min_value=0
 max_value=10
 sample_size=100
+# number_of_samples=5
+# number_of_samples=30
 number_of_samples=100
 
 for i in range(number_of_samples):
@@ -374,7 +376,7 @@ print("samples:",sample_array)
 
 # histogram
 import matplotlib.pyplot as plt
-plt.hist(m, bins = number_of_samples, range=[min_value, max_value])
+plt.hist(sample_array, bins = number_of_samples, range=[min_value, max_value])
 plt.xlabel('sample_mean'); plt.ylabel('Frequency')
 plt.title('Historam of sample_mean')
 plt.show()
@@ -396,18 +398,23 @@ n = battery_life.size; print("n:", n)
 #%% confidence interval
 # standard error
 import math  
-se_b = ssd_b/math.sqrt(n); print("standard error:", round(se_b,3))
+from scipy import stats
+se_b = ssd_b/math.sqrt(n)
+print("standard error:", round(se_b,3))
 #from scipy import stats
 #se_b = stats.sem(battery_life)
 
-# t_alpha with df=n-1 and alpha=0.05
-t_alpha = stats.t.ppf(1-0.05/2, n-1); print("t alpha:", round(t_alpha,3))
+# t_alpha with dof=n-1 and alpha=0.05
+t_alpha = stats.t.ppf(1-0.05/2, n-1)
+print("t alpha:", round(t_alpha,3))
 
 # error margin
-itval = t_alpha*se_b; print("error margin:", round(itval,3))
+itval = t_alpha*se_b
+print("error margin:", round(itval,3))
 
 # confidence interval
-CI = [round(xbar_b-itval,3), round(xbar_b+itval,3)]; print("95% confidence interval:", CI)
+CI = [round(xbar_b-itval,3), round(xbar_b+itval,3)]
+print("95% confidence interval:", CI)
 #%%
 """Statistics using Python by Prof. Uk Jung
 6. 추론통계학: 가설검정 (Inferential Statistics: Hypothesis Test)
@@ -466,7 +473,7 @@ whours=pd.read_csv('whours.csv')
 whours_M = whours[whours['gender']=='M'].hours 
 whours_F = whours[whours['gender']=='F'].hours
 
-import scipy.stats 
+#import scipy.stats 
 results = stats.ttest_ind(whours_M, whours_F, equal_var=True)
 print("test statistic: ", round(results[0],3))
 print("p-value: ", round(results[1],3))
@@ -479,7 +486,7 @@ sales_after = spairs[spairs['status']==2].sales.values
 sales_diff = sales_after - sales_before
 
 from scipy.stats import t
-import numpy as np
+import numpy as np 
 import scipy.stats as stats
 alpha=0.05
 n = len(sales_diff); d_of_f= n - 1
