@@ -53,6 +53,47 @@ standard_deviation=2
 print("3)", round(norm.cdf(5,expected_value,standard_deviation) - norm.cdf(2,expected_value,standard_deviation), 3))
 #print("3)", round(norm.cdf((5-expected_value)/standard_deviation) - norm.cdf((2-expected_value)/standard_deviation), 3))
 
-
-
 #%%
+import math
+# import numpy as np
+from scipy.stats import norm
+from scipy.stats import t
+
+parameter_value=257
+sample_array=[260,265,250,270,272,258,262,268,270,252]
+sample_size=len(sample_array)
+
+print("sample:", sample_array)
+print("sample_size:", sample_size)
+print()
+
+sample_mean=np.mean(sample_array)
+sample_variance=np.var(sample_array, ddof=1)
+sample_std_dev=math.sqrt(sample_variance)
+
+print("sample_mean:", sample_mean)
+print("sample_variance:", sample_variance)
+print("sample_standard_deviation:", sample_std_dev)
+print()
+
+alpha=0.05
+t_alpha_2=t.ppf(1 - alpha / 2, sample_size - 1)
+print("t_alpha_2:", t_alpha_2)
+
+interval=sample_std_dev / math.sqrt(sample_size) * t_alpha_2
+critical_value1=parameter_value - interval
+critical_value2=parameter_value + interval
+
+rejection_region=[]
+rejection_region.append(round(critical_value1,3))
+rejection_region.append(round(critical_value2,3))
+print("rejection_region:", rejection_region)
+print()
+
+t_statistic=(sample_mean - parameter_value) / (sample_std_dev / math.sqrt(sample_size))
+print("t_statistic:", t_statistic)
+
+#p_value=2 * min(1 - t.cdf(t_statistic, sample_size - 1), t.cdf(t_statistic, sample_size - 1))
+p_value=2 * (1 - t.cdf(abs(t_statistic), sample_size - 1))
+print("p_value:", round(p_value, 3))
+
