@@ -1,7 +1,20 @@
 ### Install Anaconda
+[https://docs.anaconda.com/anaconda/install/](https://docs.anaconda.com/anaconda/install/)
 
+* Anaconda Navigator
+* Jupyter Notebook
+* Spyder
 
+---
 ### Install Kite
+> Kite is IDE Plugin for python documentation about statiscs
+
+[https://www.kite.com/download/](https://www.kite.com/download/)
 
 
-### Install numpy, matplotlib package by pip
+
+---
+### Install statistics package by pip
+```bash
+$ pip install numpy matplotlib pandas
+```
