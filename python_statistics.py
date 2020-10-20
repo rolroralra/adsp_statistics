@@ -331,23 +331,24 @@ print("normal randome variables=", norm.rvs(loc, scale, size=5))
 # pdf, cdf, quantile of chisquare dist
 
 from scipy.stats import chi2
-df=3
-aaa=chi2.cdf(2, df)
+# degree of freedom
+dof=3
+aaa=chi2.cdf(2, dof)
 print("chi-square cdf=",round(aaa,3))
-#print("chi-square quantile=",chi2.ppf(0.95, df))
+#print("chi-square quantile=",chi2.ppf(0.95, dof))
 
 # pdf, cdf, quantile of t dist
 from scipy.stats import t
-df=10
-#print("t pdf=",t.pdf(-1, df))
-#print("t quantile=",t.ppf(0.5, df))
-print("t random variables=", t.rvs(df, size=5))
+dof=10
+print("t pdf=",t.pdf(-1, dof))
+print("t quantile=",t.ppf(0.5, dof))
+print("t random variables=", t.rvs(dof, size=5))
 
 # pdf, cdf, quantile of F dist
 from scipy.stats import f
-df1=5
-df2=7
-aaa=f.cdf(3, df1, df2)
+dof1=5
+dof2=7
+aaa=f.cdf(3, dof1, dof2)
 print("F cdf=",round(aaa,3))
 #%%
 """Statistics using Python by Prof. Uk Jung
@@ -356,18 +357,26 @@ print("F cdf=",round(aaa,3))
 #%%표본평균의 히스토그램
 #mean of random sample
 import numpy as np
-m = []; np.random.seed(1234)
-for i in range(100):
-    sample = np.random.randint(0, 10, size = 5)
-    m.append(np.mean(sample))
-m = np.array(m)
-print(m)
+sample_array = []
+random_seed=1234
+np.random.seed(random_seed)
+
+min_value=0
+max_value=10
+sample_size=100
+number_of_samples=100
+
+for i in range(number_of_samples):
+    sample = np.random.randint(min_value, max_value, size = sample_size)
+    sample_array.append(np.mean(sample))
+sample_array = np.array(sample_array)
+print("samples:",sample_array)
 
 # histogram
 import matplotlib.pyplot as plt
-plt.hist(m, bins = 100, range=[0, 10])
-plt.xlabel('m'); plt.ylabel('Frequency')
-plt.title('Historam of m')
+plt.hist(m, bins = number_of_samples, range=[min_value, max_value])
+plt.xlabel('sample_mean'); plt.ylabel('Frequency')
+plt.title('Historam of sample_mean')
 plt.show()
 #%%
 """Statistics using Python by Prof. Uk Jung
@@ -771,5 +780,3 @@ vif
 #%%##################################################################
 ################# <The End for Statistics>  #########################
 #####################################################################
-
-
