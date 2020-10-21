@@ -568,7 +568,8 @@ from statsmodels.formula.api import ols
 import statsmodels.api as sm
 
 lmFit = ols('y ~ treat', data = group_data).fit()
-sm.stats.anova_lm(lmFit)
+result=sm.stats.anova_lm(lmFit)
+print(result)
 #%%
 """Statistics using Python by Prof. Uk Jung
 9-1. 상관분석(Correlation Analysis)
@@ -616,14 +617,13 @@ plt.show()
 #%% model fitting for cars.csv
 import statsmodels.formula.api as smf
 slr = smf.ols('dist ~ speed', data = cars_1).fit()
-# dir(slr)
-# slr.params
+dir(slr)
+slr.params
 print("Intercept: ", round(slr.params[0],3), "\n",
       "speed: ", round(slr.params[1],3))
 #%% model graph for cars.csv
 
-abline_values = [slr.params[0] + slr.params[1]*i 
-                 for i in cars_1['speed']]
+abline_values = [slr.params[0] + slr.params[1]*i for i in cars_1['speed']]
 plt.plot(cars_1['speed'],cars_1['dist'], 'o')
 plt.plot(cars_1['speed'], abline_values, 'b')
 plt.xlabel('speed')
@@ -758,12 +758,12 @@ print("Adj-Rsqaure for Model 1: ", mlr1.rsquared_adj, "\n",
 #%% selling.csv with multicollinearity
 import pandas as pd
 selling=pd.read_csv('selling.csv')
-selling.head()
+print(selling.head())
 #%% model fitting for selling.csv 
 import statsmodels.formula.api as smf
 mlr_selling = smf.ols('price ~ bedrooms + hsize + lotsize', 
               data = selling).fit()
-mlr_selling.summary()
+print(mlr_selling.summary())
 #%% scatter plot for selling.csv 
 import seaborn as sns
 sns.pairplot(selling[['price', 'bedrooms', 
@@ -780,8 +780,7 @@ from statsmodels.stats.outliers_influence import variance_inflation_factor
 y, X = dmatrices('price ~ bedrooms + hsize + lotsize', 
                  selling, return_type = 'dataframe')
 vif = pd.DataFrame()
-vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i 
-   in range(X.shape[1])]
+vif["VIF Factor"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
 vif["features"] = X.columns 
 vif
 #%%##################################################################
