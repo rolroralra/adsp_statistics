@@ -17,6 +17,7 @@
 ## Install statistics package by pip
 ```bash
 $ pip install numpy matplotlib pandas
+$ pip install GraphViz pydotplus mlxtend
 ```
 
 ---
