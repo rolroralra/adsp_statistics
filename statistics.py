@@ -436,7 +436,7 @@ import pandas as pd
 # 방법1: 디렉토리 주소를 포함하여 파일명 적어주기
 # 방법2: 현재의 working directory에 파일을 옮겨놓기
 # 방법3: 파일이 저장된 디렉토리를 working directory로 정하기 ****
-cell=pd.read_csv('cellphone.csv')
+cell=pd.read_csv('./data/cellphone.csv')
 X=cell['AMOUNT']
 
 xbar_b = np.mean(X); print("x_bar:", xbar_b)
@@ -468,7 +468,7 @@ test_stat=(n-1)* sd_b**2/25; print("test stat=", round(test_stat,3))
 print("P-value=",round(1-chi2.cdf(test_stat, df),3))
 #%% 두 모집단의 모평균 차이에 관한 검정: whours
 import pandas as pd
-whours=pd.read_csv('whours.csv')
+whours=pd.read_csv('./data/whours.csv')
 
 whours_M = whours[whours['gender']=='M'].hours 
 whours_F = whours[whours['gender']=='F'].hours
@@ -479,7 +479,7 @@ print("test statistic: ", round(results[0],3))
 print("p-value: ", round(results[1],3))
 #%% 대응표본에 대한 모평균 차이에 관한 검정: salespairs
 import pandas as pd
-spairs=pd.read_csv('salespairs.csv')
+spairs=pd.read_csv('./data/salespairs.csv')
 
 sales_before = spairs[spairs['status']==1].sales.values
 sales_after = spairs[spairs['status']==2].sales.values
@@ -577,7 +577,7 @@ print(result)
 #%% 상관분석: twins
 # twins.csv 
 import pandas as pd
-twins=pd.read_csv('twins.csv')
+twins=pd.read_csv('./data/twins.csv')
 
 # scatter plot
 import matplotlib.pylab as plt
@@ -603,7 +603,7 @@ print (" Pearson's Correlation Analysis","\n",
 #%% 단순선형회귀모형 : cars
 import pandas as pd
 # cars.csv 
-cars=pd.read_csv('cars.csv')
+cars=pd.read_csv('./data/cars.csv')
 cars.head()
 cars_1=cars.drop(['Unnamed: 0'], axis=1)
 cars_1
@@ -666,7 +666,7 @@ plt.tight_layout()
 #%% 다중선형회귀분석 for drywall.csv 
 import pandas as pd
 # drywall.csv 
-drywall=pd.read_csv('drywall.csv')
+drywall=pd.read_csv('./data/drywall.csv')
 drywall.head()
 #%% scatter plot for drywall.csv 
 import seaborn as sns
@@ -693,7 +693,7 @@ mlr.summary()
 import pandas as pd
 
 # swiss.csv 
-swiss=pd.read_csv('swiss.csv')
+swiss=pd.read_csv('./data/swiss.csv')
 swiss.head()
 swiss1 = swiss.drop(['Unnamed: 0'], axis=1)
 swiss1.head()
@@ -757,7 +757,7 @@ print("Adj-Rsqaure for Model 1: ", mlr1.rsquared_adj, "\n",
 """
 #%% selling.csv with multicollinearity
 import pandas as pd
-selling=pd.read_csv('selling.csv')
+selling=pd.read_csv('./data/selling.csv')
 print(selling.head())
 #%% model fitting for selling.csv 
 import statsmodels.formula.api as smf

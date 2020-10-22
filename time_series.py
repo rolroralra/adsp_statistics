@@ -8,7 +8,7 @@ Created on Thu Dec 19 20:12:03 2019
 import pandas as pd
 
 # Import as Dataframe
-df = pd.read_csv('a10.csv', parse_dates=['date'], index_col='date')
+df = pd.read_csv('./data/a10.csv', parse_dates=['date'], index_col='date')
 #df = pd.read_csv('https://raw.githubusercontent.com/selva86/datasets/master/a10.csv', 
 #                 parse_dates=['date'], index_col='date')
 df.head()
@@ -131,7 +131,7 @@ plt.legend(loc=2)
 import pandas as pd
 
 # Import as Dataframe
-df = pd.read_csv('a10.csv', 
+df = pd.read_csv('./data/a10.csv', 
                  parse_dates=['date'], index_col='date')
 df.head()
 #%% Visualizing a time series

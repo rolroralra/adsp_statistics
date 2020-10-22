@@ -17,7 +17,7 @@ os.getcwd()
 ##############################
 # Regression - Usedcar with categorical
 ##############################
-usedcar2 = pd.read_csv('usedcar2.csv')
+usedcar2 = pd.read_csv('./data/usedcar2.csv')
 usedcar2
 usedcar2.describe()
 usedcar2['Color'].value_counts()
@@ -68,7 +68,7 @@ plt.show()
 ##############################
 # 로지스틱회귀분석 - directmail
 ##############################
-directmail = pd.read_csv('directmail.csv')
+directmail = pd.read_csv('./data/directmail.csv')
 directmail
 
 # 결측치 제거
@@ -119,7 +119,7 @@ np.exp(final_m.params)
 # K-nearest neighbor - directmail
 from sklearn.neighbors import KNeighborsClassifier
 ##############################
-directmail = pd.read_csv('directmail.csv')
+directmail = pd.read_csv('./data/directmail.csv')
 directmail = directmail.dropna()
 directmail = pd.get_dummies(directmail, columns=['GENDER'], drop_first=True)
 X = directmail[['AGE','BUY18','CLIMATE','FICO','INCOME', 'MARRIED','OWNHOME','GENDER_M']]
@@ -143,7 +143,7 @@ knn.predict_proba(people)
 # Naive Bayes - directmail
 from sklearn.naive_bayes import GaussianNB
 ##############################
-directmail = pd.read_csv('directmail.csv')
+directmail = pd.read_csv('./data/directmail.csv')
 directmail = directmail.dropna()
 directmail = pd.get_dummies(directmail, columns=['GENDER'], drop_first=True)
 X = directmail[['AGE','BUY18','CLIMATE','FICO','INCOME', 'MARRIED','OWNHOME','GENDER_M']]
@@ -169,7 +169,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import roc_curve
 ##############################
-directmail = pd.read_csv('directmail.csv')
+directmail = pd.read_csv('./data/directmail.csv')
 directmail = directmail.dropna()
 directmail = pd.get_dummies(directmail, columns=['GENDER'], drop_first=True)
 X = directmail[['AGE','BUY18','CLIMATE','FICO','INCOME', 'MARRIED','OWNHOME','GENDER_M']]
@@ -258,7 +258,7 @@ os.environ["PATH"] += os.pathsep + 'D:\\Graphviz2.38\\bin\\'
 from sklearn.tree import export_graphviz
 ##############################
 # hmeq data
-hmeq = pd.read_csv('hmeq.txt',sep='\t')
+hmeq = pd.read_csv('./data/hmeq.txt',sep='\t')
 hmeq.dtypes
 hmeq.describe()
 hmeq
@@ -368,7 +368,7 @@ from sklearn.cluster import KMeans
 ##############################
 # Hierarchical clustering
 # USArrests data
-usarrest= pd.read_csv("usarrest.csv")
+usarrest= pd.read_csv("./data/usarrest.csv")
 Xname = ['Murder','Assault','UrbanPop','Rape']
 Xdata = StandardScaler().fit_transform(usarrest[Xname])
 Xdata = pd.DataFrame(Xdata)
@@ -396,7 +396,7 @@ usarrest.groupby('labels').mean()
 ##############################
 # K-means clustering
 # USArrests data
-usarrest= pd.read_csv("usarrest.csv")
+usarrest= pd.read_csv("./data/usarrest.csv")
 Xname = ['Murder','Assault','UrbanPop','Rape']
 Xdata = StandardScaler().fit_transform(usarrest[Xname])
 Xdata = pd.DataFrame(Xdata)
@@ -423,7 +423,7 @@ te = TransactionEncoder()
 #%%
 ##############################
 # Association Rule : example 1
-df = pd.read_csv("grocery.csv")
+df = pd.read_csv("./data/grocery.csv")
 df.head()
 # make boolean data
 list_data = df.T.apply(lambda x: x.dropna().tolist()).tolist()
@@ -441,7 +441,7 @@ rules[rules['antecedents'] == {'whole milk'}]
 #%%
 ##############################
 # Association Rule : example 2
-basket_data = pd.read_csv("marketbasket.csv")
+basket_data = pd.read_csv("./data/marketbasket.csv")
 basket_data.head()
 # association rule
 frequent_itemsets = apriori(basket_data, min_support=0.05, use_colnames=True)
@@ -455,7 +455,7 @@ rules[rules['antecedents'] == {' White Bread'}]
 #%%
 ##############################
 # Association Rule : example 3
-build_data = pd.read_csv("building.csv",encoding="EUC-KR")
+build_data = pd.read_csv("./data/building.csv",encoding="EUC-KR")
 build_data = build_data.drop('building',axis=1) # delete the first column
 build_data
 # association rule
@@ -469,7 +469,7 @@ rules[rules['antecedents'] == {'학원'}]
 #%%
 ##############################
 # Association Rule : example 4
-df = pd.read_csv("movie.csv")
+df = pd.read_csv("./data/movie.csv")
 df.head(10)
 df1 = df.pivot(index='ID', columns='Item', values='Item')
 df1.head()

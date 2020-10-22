@@ -96,21 +96,21 @@ np.sqrt([1,2])
 ##############################
 # 디렉토리 설정
 os.getcwd()
-os.chdir('K:\\My files\\00. 교육자료(개인)\\DS\\datasets_김현중_200629')
+os.chdir('./data')
 os.getcwd()
 
 ##############################
 # read excel file
-usedcar = pd.read_excel('usedcar2.xlsx') 
+usedcar = pd.read_excel('./data/usedcar2.xlsx') 
 usedcar
 # read text file with separator
-hmeq = pd.read_csv('hmeq.txt', sep="\t")
+hmeq = pd.read_csv('./data/hmeq.txt', sep="\t")
 hmeq
 # read csv file
-usedcar2 = pd.read_csv('usedcar2.csv') 
+usedcar2 = pd.read_csv('./data/usedcar2.csv') 
 usedcar2
 
-iris=pd.read_csv('iris.txt')
+iris=pd.read_csv('./data/iris.txt')
 iris
 
 
@@ -150,7 +150,7 @@ from sklearn.preprocessing import StandardScaler
 normalize = MinMaxScaler()
 standardize = StandardScaler()
 
-hmeq = pd.read_csv('hmeq.txt', sep="\t")
+hmeq = pd.read_csv('./data/hmeq.txt', sep="\t")
 hmeq
 
 # 정규화
@@ -175,7 +175,7 @@ plt.hist(hmeq['sqrt'], bins=20)
 # 5. 변수이름 바꾸기 및 새로운 변수 추가하기
 ##############################
 # 변수이름 바꾸기
-sales = pd.read_csv('sales.csv')
+sales = pd.read_csv('./data/sales.csv')
 sales.columns
 sales.columns = ['city','district','gender','store.name','store.code','ymd','sales.total']
 sales
@@ -269,7 +269,7 @@ pd.merge(df1, df2, how='outer', on='title')
 pd.merge(df1, df2, how='inner', on='title')
 
 # product code data
-products = pd.read_csv('productcode.csv')
+products = pd.read_csv('./data/productcode.csv')
 products.columns
 products.columns = ['biz.code','product.name']
 products
@@ -278,7 +278,7 @@ merge_data1 = pd.merge(sales, products, how='left', on='biz.code')
 merge_data1
 
 # climate data
-climates = pd.read_csv('seoul_climate.csv')
+climates = pd.read_csv('./data/seoul_climate.csv')
 climates.columns
 climates.columns = ['city','district','ym','latitude','longitude','rainfall']
 climates.dtypes
@@ -326,7 +326,7 @@ sales_rain_mean
 # 9. 결측치 처리하기
 ##############################
 # 결측치 제거 혹은 채워넣기
-hmeq = pd.read_csv('hmeq.txt', sep="\t")
+hmeq = pd.read_csv('./data/hmeq.txt', sep="\t")
 hmeq
 df = hmeq.iloc[:,6:]  # 모든 행, 6번째 컬럼이후만
 df
@@ -355,17 +355,17 @@ df_impute_median.head()
 # 10. 파일로 저장하기
 ##############################
 # Read/Write dataset
-hmeq = pd.read_csv('hmeq.txt', sep='\t')
-hmeq.to_csv('hmeq.csv', index=False)
-hmeq.to_excel('hmeq.xlsx', index=False)
+hmeq = pd.read_csv('./data/hmeq.txt', sep='\t')
+hmeq.to_csv('./data/hmeq.csv', index=False)
+hmeq.to_excel('./data/hmeq.xlsx', index=False)
 
-build_data = pd.read_csv("building.csv") # not working
-build_data = pd.read_csv("building.csv", encoding="EUC-KR")
-build_data.to_csv('building_euc.csv', index=False, encoding="EUC-KR") 
+build_data = pd.read_csv("./data/building.csv") # not working
+build_data = pd.read_csv("./data/building.csv", encoding="EUC-KR")
+build_data.to_csv('./data/building_euc.csv', index=False, encoding="EUC-KR") 
 
 # excel can take utf-8 csv file (https://www.lesstif.com/life/ms-excel-utf-8-csv-54952504.html)
-build_data.to_csv('building_utf.csv', index=False)
-build_data.to_excel('building.xlsx', index=False)
+build_data.to_csv('./data/building_utf.csv', index=False)
+build_data.to_excel('./data/building.xlsx', index=False)
 
-merge_data2.to_csv('sales_euc.csv', index=False, encoding="EUC-KR") 
-merge_data2.to_excel('sales.xlsx', index=False)
+merge_data2.to_csv('./data/sales_euc.csv', index=False, encoding="EUC-KR") 
+merge_data2.to_excel('./data/sales.xlsx', index=False)
