@@ -21,4 +21,4 @@ $ pip install numpy matplotlib pandas
 
 ---
 ## Pandas Document
-[https://pandas.pydata.org/pandas-docs/stable/reference/io.html](https://pandas.pydata.org/pandas-docs/stable/reference/io.html)
+[https://pandas.pydata.org/pandas-docs/stable/reference/index.html](https://pandas.pydata.org/pandas-docs/stable/reference/index.html)
