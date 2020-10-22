@@ -362,6 +362,8 @@ hmeq.to_excel('hmeq.xlsx', index=False)
 build_data = pd.read_csv("building.csv") # not working
 build_data = pd.read_csv("building.csv", encoding="EUC-KR")
 build_data.to_csv('building_euc.csv', index=False, encoding="EUC-KR") 
+
+# excel can take utf-8 csv file (https://www.lesstif.com/life/ms-excel-utf-8-csv-54952504.html)
 build_data.to_csv('building_utf.csv', index=False)
 build_data.to_excel('building.xlsx', index=False)
 
