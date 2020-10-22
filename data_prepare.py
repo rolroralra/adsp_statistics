@@ -191,7 +191,6 @@ sales['biz.code'] = sales['store.code'].str[0:4]
 # 불필요 변수 제거
 sales = sales.drop('city', axis=1)
 sales = sales.drop('store.code', axis=1)
-sales
 
 
 #%%
@@ -306,14 +305,16 @@ bins = [0,50,250,300]
 labels = ["하", "중", "상"]
 # right=False (이상~미만)
 category = pd.cut(merge_data2['rainfall'], bins, labels=labels, right=False)
-category
 type(category)
 type(pd.DataFrame(category))
+category
+pd.DataFrame(category)
+
 category.value_counts(dropna=False)
 merge_data2['rain_cat'] = pd.DataFrame(category)
 merge_data2.max()
 sales_rain = merge_data2[['ym','product.name','rain_cat','sales.total']]
-sales_rain
+sales_rain.dtypes
 
 # 강수량 ‘상’,’중’,’하’에 따른 업종별 일평균 판매건수
 sales_rain_mean = sales_rain.groupby(['product.name','rain_cat']).mean()
@@ -326,7 +327,8 @@ sales_rain_mean
 ##############################
 # 결측치 제거 혹은 채워넣기
 hmeq = pd.read_csv('hmeq.txt', sep="\t")
-df = hmeq.iloc[:,6:]
+hmeq
+df = hmeq.iloc[:,6:]  # 모든 행, 6번째 컬럼이후만
 df
 # 변수별 결측치 비율
 df.isnull().sum() / len(df)
