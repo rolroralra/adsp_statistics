@@ -11,8 +11,6 @@
 
 [https://www.kite.com/download/](https://www.kite.com/download/)
 
-
-
 ---
 ## Install statistics package by pip
 ```bash
