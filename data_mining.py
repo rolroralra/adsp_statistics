@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt  # 박스플랏, 산점도
 import scipy.stats as stats  # 정규분포, t분포, 신뢰구간(z분포, t분포), 가설검정
 import statsmodels.api as sm # 비율의 신뢰구간, 비율의 가설검정, two-sample ttest, 평균차의 신뢰구간, 회귀분석
 import statsmodels.formula.api as smf
+# import pylab
 pd.set_option('display.max_columns', None) # show all columns when displaying dataset
 
 # 디렉토리 설정
 os.getcwd()
-os.chdir('C:/Data/')
+os.chdir('K:\\My files\\00. 교육자료(개인)\\DS\\datasets_김현중_200629')
 os.getcwd()
 
 #%%
@@ -27,6 +28,7 @@ usedcar2.groupby('Color').mean()
 # 더미변수 생성 #
 usedcar2 = pd.get_dummies(usedcar2, columns=['Color'],prefix='I',drop_first=True)
 usedcar2
+usedcar2.describe()
 
 # 다중회귀분석
 usedcar2.lm = smf.ols('Price ~ Odometer+I_white+I_silver', data=usedcar2).fit()
@@ -36,16 +38,30 @@ usedcar2.lm.summary()
 temp=[[35000,1,0],[35000,0,1],[35000,0,0]]
 temp=pd.DataFrame(temp,columns=['Odometer','I_white','I_silver'])
 usedcar2.lm.predict(temp)
+# usedcar2.lm.predict({'Odometer':[35000,35000,35000],'I_white':[1,0,0], 'I_silver':[0,1,0]})
+# usedcar2.lm.predict({'Odometer':35000,'I_white':1, 'I_silver':0})
 
 # 잔차분석
 yhat = usedcar2.lm.fittedvalues
 residual = usedcar2.lm.resid
+
+#Residual plot
+# plt.plot(usedcar2['Price'], residual, 'o')
+plt.plot(yhat, residual, 'o')
+plt.title('Residual plot')
+plt.xlabel('Price')
+plt.ylabel('Residual')
+plt.show()
 # normality
 stats.probplot(residual, dist="norm", plot=plt)
+# stats.probplot(residual, dist="norm", plot=pylab)
 plt.title("Normal Q-Q plot")
 plt.show()
 # equal variance
 plt.scatter(yhat, residual)
+plt.title('Residual plot')
+plt.xlabel('Price')
+plt.ylabel('Residual')
 plt.show()
 
 #%%
@@ -64,6 +80,7 @@ directmail = pd.get_dummies(directmail, columns=['GENDER'], drop_first=True)
 directmail.head(8)
 
 # Logistic Regression #
+# glm: generalized linear model
 full_m = smf.glm('RESPOND ~ AGE+BUY18+CLIMATE+FICO+INCOME+MARRIED+OWNHOME+GENDER_M',
                  data=directmail, family=sm.families.Binomial()).fit()
 full_m.summary()
@@ -79,8 +96,10 @@ final_m = smf.glm('RESPOND ~ AGE+BUY18+CLIMATE+FICO+MARRIED+OWNHOME',
 final_m.summary()
 
 # Prediction
-smith = [35, 1, 15, 800, 50,1, 0, 1] 
-johnson = [36, 0, 19, 900, 55, 0, 1, 1]
+# smith = [35, 1, 15, 800, 50,1, 0, 1] 
+smith = {'AGE':35, 'BUY18':1, 'CLIMATE':15, 'FICO':800, 'INCOME':50,'MARRIED':1, 'OWNHOME':0, 'GENDER_M':1}
+# johnson = [36, 0, 19, 900, 55, 0, 1, 1]
+johnson = {'AGE':36, 'BUY18':0, 'CLIMATE':19, 'FICO':900, 'INCOME':55,'MARRIED':0, 'OWNHOME':1, 'GENDER_M':1}
 people = [smith, johnson] # to make a dataframe
 people = pd.DataFrame(people,columns=['AGE','BUY18','CLIMATE','FICO','INCOME', 'MARRIED','OWNHOME','GENDER_M'])
 final_m.predict(people)
@@ -88,7 +107,11 @@ y_actual = directmail['RESPOND']
 y_actual.value_counts()
 y_actual.value_counts() / len(directmail)
 
+final_m.fittedvalues
+# final_m.resid     # ERROR, GLM does not have 'resid' attribute
+
 # odds ratio #
+final_m.params
 np.exp(final_m.params)
 
 #%%
@@ -100,9 +123,11 @@ directmail = pd.read_csv('directmail.csv')
 directmail = directmail.dropna()
 directmail = pd.get_dummies(directmail, columns=['GENDER'], drop_first=True)
 X = directmail[['AGE','BUY18','CLIMATE','FICO','INCOME', 'MARRIED','OWNHOME','GENDER_M']]
+# X=directmail.iloc[:,1:]
 Y = directmail['RESPOND']
+# Z=directmail.iloc[:,0:1]
 
-#Create a KNN Classifier
+#Create a KNN 
 knn = KNeighborsClassifier(n_neighbors=100, metric='euclidean')
 knn.fit(X, Y)
 
@@ -229,7 +254,7 @@ plt.show()
 from sklearn import tree
 import pydotplus
 from IPython.display import Image
-os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+os.environ["PATH"] += os.pathsep + 'D:\\Graphviz2.38\\bin\\'
 from sklearn.tree import export_graphviz
 ##############################
 # hmeq data
@@ -459,4 +484,3 @@ frequent_itemsets
 rules = association_rules(frequent_itemsets, metric="lift", min_threshold=1.2)
 rules = rules.sort_values("lift", ascending=False)
 rules
-
