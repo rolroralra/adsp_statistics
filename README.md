@@ -23,3 +23,7 @@ $ pip install GraphViz pydotplus mlxtend
 ---
 ## Pandas Document
 [https://pandas.pydata.org/pandas-docs/stable/reference/index.html](https://pandas.pydata.org/pandas-docs/stable/reference/index.html)
+
+---
+## statsmodel Document
+[https://www.statsmodels.org/stable/user-guide.html#](https://www.statsmodels.org/stable/user-guide.html#)
