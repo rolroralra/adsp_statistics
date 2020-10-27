@@ -5,8 +5,13 @@ Created on Mon Oct 26 11:20:47 2020
 @author: shyoung.kim
 """
 #%%
+import time
+import statistics
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.stats as stats
+import seaborn as sns
+import pandas as pd
 # import math
 
 #%%
@@ -138,6 +143,9 @@ plt.text(0, 25, 'old 2')
 
 plt.show()
 #%%
+###################
+# bar
+###################
 member_IDs= ['m_01', 'm_02', 'm_03', 'm_04']
 before_ex = [27, 35, 40, 33]
 after_ex = [30, 38, 42, 37]
@@ -150,7 +158,11 @@ member_size = len(member_IDs)
 plt.bar(np.arange(member_size), before_ex, color = colors, tick_label = member_IDs, width = bar_width)
 plt.barh(np.arange(member_size), before_ex, color = colors, tick_label = member_IDs, height = bar_height)
 
+plt.show()
 #%%
+###################
+# bar with two group
+###################
 member_IDs= ['m_01', 'm_02', 'm_03', 'm_04']
 before_ex = [27, 35, 40, 33]
 after_ex = [30, 38, 42, 37]
@@ -167,5 +179,130 @@ plt.xlabel('ID')
 plt.ylabel('count')
 plt.title('Before & After')
 
+plt.show()
+#%%
+###################
+# pie
+###################
+fruit = ['apple', 'banana', 'strawberry', 'orange', 'grape']
+result = np.random.randint(0, 10 + 1, size=len(fruit))
+plt.figure(figsize=(5, 5))
+plt.pie(result)
 
+plt.figure()
+explode_value=(0.5, 0.1, 0, 0, 0)
+plt.pie(result, labels=fruit, explode=explode_value, autopct='%.1f%%', startangle=90, counterclock=False, shadow=True)
+
+plt.show()
+#%%
+###################
+# histogram
+###################
+student_num = 100
+math = np.random.randint(0, 100 + 1, size=student_num)
+english = np.random.randint(0, 100 + 1, size=student_num)
+plt.hist(math)
+# plt.hist2d(math, english)
+plt.hist(math, bins=10)
+plt.xlabel('score')
+plt.ylabel('frequency')
+plt.title('math score histogram')
+plt.grid(True)      # plt.grid()
+
+plt.show()
+#%%
+###################
+# scatter plot
+###################
+data_size=20
+mean_value=173
+std_value=5
+height = stats.norm.rvs(loc=mean_value, scale=std_value, size=data_size, random_state=np.random.randint(time.time())).round()
+
+mean_value=70
+std_value=8
+weight = stats.norm.rvs(loc=mean_value, scale=std_value, size=data_size, random_state=np.random.randint(time.time())).round()
+
+plt.scatter(height, weight)
+plt.xlabel('Height(m)')
+plt.ylabel('Weight(kg)')
+plt.title('Scatter Plot for Height & Wieght')
+plt.grid()
+
+plt.show()
+
+#%%
+###################
+# boxplot
+###################
+member_IDs= ['m_01', 'm_02', 'm_03', 'm_04']
+before_ex = [27, 35, 40, 33]
+after_ex = [30, 38, 42, 37]
+sns.boxplot(x=before_ex)
+
+table1 = list(zip(before_ex,after_ex))
+table2 = np.transpose([before_ex, after_ex])
+
+# multiple boxplot
+dataFrame = pd.DataFrame(table1, columns=['before_ex', 'after_ex'])
+dataFrame
+dataFrame.dtypes
+dataFrame.columns
+dataFrame.describe()
+
+sns.boxplot(data=dataFrame, orient='h')
+sns.boxplot(data=dataFrame, orient='h', palette='Set2')
+
+#%%
+###################
+# statistical measure
+# 1. central tendency
+# 2. variability
+# 3. shape
+###################
+mean_value=75
+std_value=15
+sample_size=100
+sample = stats.norm.rvs(loc=mean_value, scale=std_value, size=sample_size, random_state=np.random.randint(time.time()))
+
+# central tendency
+print("sample:", sample, '\n')
+print("mean:", np.mean(sample))
+print("median:", np.median(sample))
+print()
+print("mean:", statistics.mean(sample))
+print("median:", statistics.median(sample))
+print("mode:", statistics.mode(sample))
+
+
+# variability
+print("variance:", np.var(sample))
+print("variance:", np.var(sample, ddof=1))
+print("variacne:", statistics.variance(sample))
+print()
+
+print("standard deviation:", np.std(sample))
+print("standard deviation:", np.std(sample, ddof=1))
+print("standard deviation:", statistics.stdev(sample))
+print()
+
+print("max:", np.max(sample))
+print("min:", np.min(sample))
+print("range:", np.max(sample) - np.min(sample))
+print()
+
+quartile_1, quartile_3 = np.quantile(sample, [0.25, 0.75])
+percentile_25, percentile_75 = np.percentile(sample, [25, 75])
+print("IQR(Inter Quartile Range:", quartile_3 - quartile_1)
+print()
+
+# shape
+from scipy.stats import skew
+from scipy.stats import kurtosis
+print("skewness:", skew(sample))
+print("kurtosis:", kurtosis(sample))
+print()
+
+dataFrame = pd.DataFrame(sample)
+print(dataFrame.describe())
 #%%
