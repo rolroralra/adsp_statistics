@@ -5,6 +5,7 @@ Created on Mon Oct 26 11:20:47 2020
 @author: shyoung.kim
 """
 #%%
+import os
 import time
 import statistics
 import matplotlib.pyplot as plt
@@ -14,6 +15,9 @@ import seaborn as sns
 import pandas as pd
 # import math
 
+os.getcwd()
+os.chdir('../data')
+os.getcwd()
 #%%
 data = [19, 10 , 14, 25, 20]
 #data.sort(reverse=True)

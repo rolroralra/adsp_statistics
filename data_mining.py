@@ -10,7 +10,7 @@ pd.set_option('display.max_columns', None) # show all columns when displaying da
 
 # 디렉토리 설정
 os.getcwd()
-os.chdir('K:\\My files\\00. 교육자료(개인)\\DS\\datasets_김현중_200629')
+os.chdir('./data')
 os.getcwd()
 
 #%%

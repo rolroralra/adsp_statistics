@@ -5,6 +5,7 @@ Created on Tue Oct 27 16:08:43 2020
 @author: shyoung.kim
 """
 #%%
+import os
 import time
 import statistics
 import matplotlib.pyplot as plt
@@ -13,6 +14,10 @@ import scipy.stats as stats
 import seaborn as sns
 import pandas as pd
 import math
+
+os.getcwd()
+os.chdir('../data')
+os.getcwd()
 #%%
 ###################
 # covariance -- COV(X,Y)
@@ -283,10 +288,15 @@ print()
 # using t distribution
 # stats.ttest_ind(sample1, sample2, eqaul_var=True)
 ######################################################################
+whours = pd.read_csv('whours.csv')
+sample1 = whours[whours['gender'] == 'M'].hours
+sample2 = whours[whours['gender'] == 'F'].hours
+
+
 tstatistic, pvalue = stats.ttest_ind(sample1, sample2, equal_var=True)
-print(f"tstatistic: {tstatistic}, p-value: {pvalue}")
+print(f"tstatistic: {round(tstatistic, 3)}, p-value: {round(pvalue, 3)}")
 tstatistic, pvalue = stats.ttest_ind(sample1, sample2, equal_var=False)
-print(f"tstatistic: {tstatistic}, p-value: {pvalue}")
+print(f"tstatistic: {round(tstatistic, 3)}, p-value: {round(pvalue , 3)}")
 print()
 #%%
 ######################################################################
@@ -294,8 +304,13 @@ print()
 # using t distribution
 # stats.ttest_rel(sample1, sample2)
 ######################################################################
-tstatistic, pvalue = stats.ttest_rel(sample1, sample2)
-print(f"tstatistic: {tstatistic}, p-value: {pvalue}")
+data = pd.read_csv('salespairs.csv')
+sample1 = data[data['status'] == 1].sales
+sample2 = data[data['status'] == 2].sales
+diff_array = sample2.values - sample1.values
+
+tstatistic, pvalue = stats.ttest_rel(sample2, sample1)  # sample2 - sample1
+print(f"tstatistic: {round(tstatistic, 3)}, p-value: {round(pvalue, 3)}")
 print()
 
 #%%
