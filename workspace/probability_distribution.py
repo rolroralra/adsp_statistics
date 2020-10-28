@@ -336,4 +336,3 @@ print(f"chi2-statistic: {chi22}")
 print(f"p-value: {p2}")
 print(f"degree of freedom: {dof}")
 print(f"expected_values:\n{expected}")
->>>>>>> 5429440214a7a547e9f190e76d43b45d0a97383f
