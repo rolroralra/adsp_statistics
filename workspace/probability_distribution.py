@@ -155,3 +155,185 @@ print(f"When X ~ Expon({lamda}),\t IQR = [{gamma.ppf(0.25, k)}, {gamma.ppf(0.75,
 sample_size = 10
 print(f"Random Variates (size :{sample_size}) from X ~ Expon({lamda})\n", expon.rvs(k, size=sample_size))
 print()
+########################
+#
+########################
+np.random.seed(int(time.time()))
+
+data_size = 100
+sample_size = 30
+data_range=(0,10)
+sample_mean_array=[]
+for i in range(data_size):
+    sample = np.random.randint(data_range[0], data_range[1], size = sample_size)
+    sample_mean_array.append(np.mean(sample))
+
+# sample_mean_array = np.array(sample_mean_array)
+print(sample_mean_array)
+print()
+
+plt.hist(sample_mean_array, bins=100, range=data_range)
+plt.xlabel('sample_mean')
+plt.ylabel('frequency')
+plt.title('Histogram of sample mean')
+plt.show()
+#%%
+##########################
+# confidence interval
+##########################
+population_mean = 257
+sample_data = [260, 265, 250, 270, 272, 258, 262, 268, 270, 252]
+sample_size = len(sample_data)
+dof = sample_size - 1
+
+confidence_level = 0.95
+sample_mean = np.mean(sample_data)
+sample_std_deviation = np.std(sample_data, ddof=1)
+
+print(f"population_mean: {population_mean}")
+print(f"sample_szie: {sample_size}")
+print(f"sample_mean: {sample_mean}")
+print(f"sample_standard_deviation: {sample_std_deviation}")
+print()
+
+alpha = (1 - confidence_level) / 2
+t_alpha = stats.t.ppf(confidence_level + alpha, dof)
+print("t_alpha:", t_alpha)
+
+delta = t_alpha * sample_std_deviation / np.sqrt(sample_size)
+
+confidence_interval = (sample_mean - delta, sample_mean + delta)
+confidence_interval = np.round(confidence_interval, 3)
+print(f"{int(100 * confidence_level)}% confidence interval: {confidence_interval}")
+print()
+
+##############################################
+# hypothesis test for population mean
+##############################################
+# way1. rejection region
+significance_level=0.05
+
+print("significance_level:", significance_level)
+t_alpha = stats.t.ppf(1 - significance_level / 2, dof)
+delta = t_alpha * sample_std_deviation / np.sqrt(sample_size)
+rejection_region = np.round((population_mean - delta, population_mean + delta), 3)
+print(f"rejection region with significance_level {int(significance_level * 100)}%: {rejection_region}")
+print()
+
+# way2. p-value
+t_sample_value = (sample_mean - population_mean) / sample_std_deviation * np.sqrt(sample_size)
+p_value = round(2 * stats.t.cdf(-abs(t_sample_value), dof), 3)
+print(f"t_statatistic_value: {t_sample_value}")
+print(f"p-value for mean != {population_mean}: {p_value}")
+print()
+
+# by using stats.ttest_1samp(sample, population_mean)
+print(stats.ttest_1samp(sample_data, population_mean))
+print()
+
+t_sample_value = (sample_mean - population_mean) / sample_std_deviation * np.sqrt(sample_size)
+p_value_left = round(stats.t.cdf(t_sample_value, dof), 3)
+print(f"t_statatistic_value: {t_sample_value}")
+print(f"p-value for mean < {population_mean}: {p_value_left}")
+print()
+
+p_value_right = round(1 - stats.t.cdf(t_sample_value, dof), 3)
+print(f"t_statatistic_value: {t_sample_value}")
+print(f"p-value for mean > {population_mean}: {p_value_right}")
+print()
+#%%
+##############################################
+# hypothesis test for population variance
+# (n - 1) * S**2 / variance  ~ chi2(n - 1) 
+##############################################
+population_stddev=5
+sample_data = [198, 201, 199, 189, 200, 199, 198, 189, 205, 195]
+sample_size = len(sample_data)
+dof = sample_size - 1
+significance_level = 0.05
+
+print(f"population standard deviation: {population_stddev}")
+print(f"sample_size: {sample_size}")
+print()
+
+sample_mean = np.mean(sample_data)
+sample_variance = np.var(sample_data, ddof=1)
+sample_stddev = np.std(sample_data, ddof=1)
+print(f"sample mean : {sample_mean}")
+print(f"sample variance: {sample_variance}")
+print(f"sample standard deviation: {sample_stddev}")
+print()
+
+
+chi_alpha = stats.chi2.ppf(1 - significance_level, dof)
+critical_value = chi_alpha * sample_variance / dof
+print(f"critical value: {critical_value}")
+print(f"rejection region for variance > {population_stddev ** 2} : [{critical_value},]")
+print()
+
+chi_value = sample_variance * dof / population_stddev ** 2
+print("chi_value", chi_value)
+p_value = round(1 - stats.chi2.cdf(chi_value, dof), 3)
+print(f"p_value for variance > {population_stddev ** 2}: {p_value}")
+print(f"Hypothesis test for variance > {population_stddev ** 2}, it can't be rejected")
+print()
+#%%
+######################################################################
+# hypothesis test for two independent population means difference
+# using t distribution
+# stats.ttest_ind(sample1, sample2, eqaul_var=True)
+######################################################################
+tstatistic, pvalue = stats.ttest_ind(sample1, sample2, equal_var=True)
+print(f"tstatistic: {tstatistic}, p-value: {pvalue}")
+tstatistic, pvalue = stats.ttest_ind(sample1, sample2, equal_var=False)
+print(f"tstatistic: {tstatistic}, p-value: {pvalue}")
+print()
+#%%
+######################################################################
+# hypothesis test for two related population means difference (paired sample)
+# using t distribution
+# stats.ttest_rel(sample1, sample2)
+######################################################################
+tstatistic, pvalue = stats.ttest_rel(sample1, sample2)
+print(f"tstatistic: {tstatistic}, p-value: {pvalue}")
+print()
+
+#%%
+######################################################################
+# hypothesis test for goodness of fit for categorical data (chi-squared 적합성 검정)
+# using chi2 distribution
+# stats.chisquare(data, probability)
+######################################################################
+observed_data = np.array([285, 66, 55, 44])
+ratios = np.array([0.68, 0.13, 0.11, 0.08])
+total_num = observed_data.sum()
+
+expected_values = total_num * ratios
+
+total_category_count = len(observed_data)
+dof = total_category_count - 1
+
+statistic, pvalue = stats.chisquare(observed_data, expected_values)
+print(f"chi-statistic: {statistic}, p-value: {pvalue}")
+print()
+#%%
+######################################################################
+# hypothesis test for independence for categorical data (chi-squared 독립성 검정)
+# using chi2 distribution
+# stats.chi2_contigency(dataFrame)
+######################################################################
+data_table = np.array([[11, 25, 27], [15, 31, 28], [44, 24, 52], [10, 17, 16]])
+column_names = ['Line1', 'Line2', 'Line3']
+row_names = ['Table', 'Leg', 'Case', 'Color']
+
+dataFrame = pd.DataFrame(data_table, columns=column_names, index=row_names)
+print(dataFrame)
+print(dataFrame.describe())
+print()
+
+chi22, p2, dof, expected = stats.chi2_contingency(dataFrame)
+print(f"chi2-statistic: {chi22}")
+print(f"p-value: {p2}")
+print(f"degree of freedom: {dof}")
+print(f"expected_values:\n{expected}")
+>>>>>>> 5429440214a7a547e9f190e76d43b45d0a97383f
