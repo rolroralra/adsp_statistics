@@ -32,12 +32,12 @@ np.cov([sample, sample2], ddof=1)
 np.cov(sample, y=sample2, ddof=1)
 
 print("COV(X,Y) =", covariance_matrix[0][1])
-print("correlaion coefficient(CORR(X,Y)):", covariance_matrix[0][1] / np.sqrt(covariance_matrix[0][0]) / np.sqrt(covariance_matrix[1][1])) 
+#print("correlaion coefficient(CORR(X,Y)):", covariance_matrix[0][1] / np.sqrt(covariance_matrix[0][0]) / np.sqrt(covariance_matrix[1][1])) 
 
 # correlation coefficient matrix
 correlation_coefficient_matrix = np.corrcoef(sample, sample2) # DeprecationWarning: bias and ddof have no effect and are deprecated
 print("CORR(X,Y) =", correlation_coefficient_matrix[0][1])
-
+print()
 #%%
 #############################
 # Bernoulli Distribution
@@ -63,6 +63,7 @@ print(f"When X ~ Bin({n},{p}),\tP(X <= {k}) = {cumulative_prob}")
 print("When X ~ Bin({n},{p}),\tP(X <= {k}) = {cumulative_prob}".format(n= 200, p=0.04, k=10, cumulative_prob=cumulative_prob))
 print("When X ~ Bin({},{}),\tP(X <= {}) = {}".format(n, p, k, cumulative_prob))
 print("When X ~ Bin({0},{1}),\tP(X <= {2}) = {3}".format(n, p, k, cumulative_prob))
+print()
 #%%
 #############################
 # Poisson Distribution
@@ -74,6 +75,7 @@ k = 10
 
 cumulative_prob = poisson.cdf(k, mean)
 print(f"When X ~ Poisson({mean}),\tP(X <= {k}) = {cumulative_prob}")
+print()
 #%%
 #############################
 # Normal Distribution
@@ -99,4 +101,57 @@ print(f"When X ~ N({loc}, {scale}^2),\t IQR = [{norm.ppf(0.25, loc, scale)}, {no
 # rvs : random variates
 sample_size = 10
 print(f"Random Variates (size :{sample_size}) from X ~ N({loc}, {scale}^2)\n", norm.rvs(loc,scale, size=sample_size))
+print()
 #%%
+#############################
+# Gamma Distribution
+# X ~ Gamma(k, theta)   but in scipy, theta = 1
+# f(x;k, theta) = x**(k-1) * exp(-x / theta) / theta ** k / gamma_function(k)
+#############################
+from scipy.stats import gamma
+k = 1
+x = 1
+
+pdf_value = gamma.pdf(x, k)
+print(f"When X ~ Gamma({k}, 1),\t pdf(X = {x}) = {pdf_value}")
+
+cdf_value = gamma.cdf(x, k)
+print(f"When X ~ Gamma({k}, 1),\t cdf(X <= {x}) = {cdf_value}")
+
+# ppf: percentage point function (inverse function of cdf)
+p = 0.25
+ppf_value = gamma.ppf(p, k)
+print(f"When X ~ Gamma({k}, 1),\t ppf(p = {p}) = {ppf_value}")
+print(f"When X ~ Gamma({k}, 1),\t IQR = [{gamma.ppf(0.25, k)}, {gamma.ppf(0.75, k)}]")
+
+# rvs : random variates
+sample_size = 10
+print(f"Random Variates (size :{sample_size}) from X ~ Gamma({k}, 1)\n", gamma.rvs(k, size=sample_size))
+print()
+#%%
+#############################
+# Expotential Distribution
+# X ~ Exp(lambd)  ... (X ~ Gamma(1, 1 / lambda))
+# f(x;lambda) = lambda * exp(-x * lambda)
+# in scipy, scale = 1 / lambda
+#############################
+from scipy.stats import expon
+lamda = 1
+x = 1
+
+pdf_value = expon.pdf(x, scale=1/lamda)
+print(f"When X ~ Expon({lamda}),\t pdf(X = {x}) = {pdf_value}")
+
+cdf_value = expon.cdf(x, scale=1/lamda)
+print(f"When X ~ Expon({lamda}),\t cdf(X <= {x}) = {cdf_value}")
+
+# ppf: percentage point function (inverse function of cdf)
+p = 0.25
+ppf_value = expon.ppf(p, scale=1/lamda)
+print(f"When X ~ Expon({lamda}),\t ppf(p = {p}) = {ppf_value}")
+print(f"When X ~ Expon({lamda}),\t IQR = [{gamma.ppf(0.25, k)}, {gamma.ppf(0.75, k)}]")
+
+# rvs : random variates
+sample_size = 10
+print(f"Random Variates (size :{sample_size}) from X ~ Expon({lamda})\n", expon.rvs(k, size=sample_size))
+print()

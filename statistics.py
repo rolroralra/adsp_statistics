@@ -477,6 +477,7 @@ whours_F = whours[whours['gender']=='F'].hours
 results = stats.ttest_ind(whours_M, whours_F, equal_var=True)
 print("test statistic: ", round(results[0],3))
 print("p-value: ", round(results[1],3))
+print("p-value: ", round(1- t.cdf(results[0], len(whours_F) - 1), 3))
 #%% 대응표본에 대한 모평균 차이에 관한 검정: salespairs
 import pandas as pd
 spairs=pd.read_csv('./data/salespairs.csv')
