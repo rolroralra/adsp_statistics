@@ -7,13 +7,16 @@ Created on Tue Oct 27 16:08:43 2020
 #%%
 import os
 import time
+import math
 import statistics
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 import seaborn as sns
 import pandas as pd
-import math
+
 
 from scipy.stats import binom
 from scipy.stats import poisson
@@ -21,17 +24,22 @@ from scipy.stats import norm
 from scipy.stats import gamma
 from scipy.stats import expon
 
+
 import statsmodels.formula.api as smf
 import statsmodels.api as sm
 from statsmodels.formula.api import ols
 
+
+from patsy import dmatrices
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
 os.getcwd()
-os.chdir('../data')
+os.chdir('./data')
 os.getcwd()
 #%%
 ###################
-# covariance -- COV(X,Y)
-# correlation coefficient -- CORR(X,Y)
+# covariance -- COV(X,Y)                --> np.cov(x, y)
+# correlation coefficient -- CORR(X,Y)  --> np.corrcoef(x, y)
 ###################
 sample_mean = 175
 sample_stddev = 5
@@ -517,4 +525,101 @@ stats.probplot(residuals, dist='norm', plot = plt)
 plt.title('QQ Plot')
 plt.ylabel('Sample Quantiles')
 plt.tight_layout()
+#%%
+######################################################################
+# Regression Analysis
+#
+# 1. Linear Regression
+#       2) multiple regression
+######################################################################
+
+## Pair Scatter Plot  by using sns.pairplot(...)
+## Scatter Plot Matrix
+data = pd.read_csv('drywall.csv')
+sns.pairplot(data, height=1.0)
+
+
+## OLS (Ordinary Least Square)
+fitted_multi_lm = smf.ols(f"{data.columns[0]} ~ {' + '.join(data.columns[1:])}", data= data).fit() 
+print(fitted_multi_lm.summary())
+print()
+print(fitted_multi_lm.params)
+print()
+print("p-value of t:\n", fitted_multi_lm.pvalues)
+print()
+print("F-value :", fitted_multi_lm.f_pvalue)
+print()
+print("R-squred :", fitted_multi_lm.rsquared)
+print()
+print("Adj. R-squared :", fitted_multi_lm.rsquared_adj)
+print()
+
+
+confidence_level = 0.05
+
+while len(data.columns) > 1:
+    #data.columns[1:].drop(fitted_multi_lm.pvalues[1:].idxmax())
+    max_pvalue_column = fitted_multi_lm.pvalues[1:].idxmax()
+    max_pvalue = fitted_multi_lm.pvalues[1:].max()
+    print("column having max p-value for t :", max_pvalue_column, ", p-value: ", max_pvalue)
+    if max_pvalue > confidence_level:
+        if len(data.columns) == 1:
+            break
+            
+        data = data.drop(max_pvalue_column, axis=1)
+        fitted_multi_lm = smf.ols(f"{data.columns[0]} ~ {' + '.join(data.columns[1:])}", data= data).fit() 
+        print(fitted_multi_lm.summary())
+    else:
+        break
+
+print("COMPLETED!")
+print()
+#%%
+######################################################################
+# Multicolinearliy from multi linear regression
+######################################################################
+data = pd.read_csv('selling.csv')
+
+#####################################
+## Scatter Plot Matrix
+#####################################
+sns.pairplot(data, height=1.0)
+
+#####################################
+## Correlation Matrix
+#####################################
+correlation_matrix = data.corr()
+print("Correlation Matrix\n", correlation_matrix)
+print()
+
+#####################################
+## VIF (Variance Inflation Factor)
+#
+# VIF = 1 / (1 - R^2)
+#####################################
+from patsy import dmatrices
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+y, x = dmatrices(f"{data.columns[0]} ~ {' + '.join(data.columns[1:])}", data, return_type='dataframe')
+
+vif = pd.DataFrame()
+vif["VIF Factor"] = [variance_inflation_factor(x.values, i) for i in range(x.shape[1])]
+vif["features"] = x.columns
+print("VIF (Varriance Inflation Factor)")
+print(vif)
+print()
+
+
+my_vif = []
+for i in range(1, len(data.columns)):
+    lm = smf.ols(f"{data.columns[i]} ~ {' + '.join(data.columns[1:i].append(data.columns[i+1:]))}", data).fit()
+    lm.summary()
+    print()
+    vif_for_i_th_X = round(1 / (1 - lm.rsquared), 6)
+    my_vif.append(vif_for_i_th_X)
+
+vif2 = pd.DataFrame(my_vif, columns=['VIF Factor'])
+print("VIF (Varriance Inflation Factor) by my code")
+print(vif2)
+print()
 #%%
