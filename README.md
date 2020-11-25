@@ -19,6 +19,7 @@
 ```bash
 $ pip install numpy matplotlib pandas
 $ pip install GraphViz pydotplus mlxtend
+$ pip install xlrd
 ```
 
 ---
